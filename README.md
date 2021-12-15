@@ -1,6 +1,6 @@
-# The boilerplate of truffle + moralis + nextjs DAPP
+# NFT marketplace boilder plate
 
-## [Refer to my blog to see more](https://colorfullife.ml/pages/diary/erics-daily-life/eric86/)
+## [Refer to my blog to see more](https://colorfullife.ml/pages/diary/erics-daily-life/eric87/)
 
 The boilerplate is created by following two nodejs package.
     - Truffle (option)
@@ -12,7 +12,7 @@ The boilerplate is created by following two nodejs package.
 
 1. clone the repo:
 ```
-git clone https://github.com/happyeric77/moralis_nextjs_boilerplate.git
+git clone https://github.com/happyeric77/blockchain_nft_boilerplate.git
 ```
 
 2. install npm depandencies:
