@@ -4,7 +4,7 @@ import { Card, Image, Tooltip, Modal, Badge} from "antd";
 const { Meta } = Card
 import { FileSearchOutlined, ShoppingCartOutlined } from "@ant-design/icons"
 import { supportedChains } from "../../src/networkProvider";
-import {useMoralisWeb3Api, useMoralisWeb3ApiCall, useMoralisQuery, useWeb3ExecuteFunction} from "react-moralis"
+import {useMoralisWeb3Api, useMoralisWeb3ApiCall, useMoralisQuery, useWeb3ExecuteFunction, useNewMoralisObject} from "react-moralis"
 import {getCollectionsByChain} from "../../src/collections"
 import contractJson from "../../src/contracts/marketPlaceBoilerPlate.json"
 import Moralis from "moralis"
@@ -53,7 +53,7 @@ export default function NFTTokenIds(props) {
                 itemId: nft.attributes.itemId,
                 price: nft.attributes.price,
                 createdAt: nft.attributes.createdAt,
-                objectId: nft.attributes.objectId,
+                objectId: nft.id,
                 owner: nft.attributes.owner
             }
         })
@@ -91,11 +91,36 @@ export default function NFTTokenIds(props) {
                     itemId: getNftInfo(nft)[0].itemId,
                 },
                 msgValue: price,
+            },
+            onSuccess: () => {
+                alert("NFT bought")
+                updateSoldMarketItem()
             }
         });
     }
 
+    async function updateSoldMarketItem(nft) {
+        let id = getNftInfo(buy)[0].objectId
+        let marketList = Moralis.Object.extend("CreatedNftItem")
+        let query = new Moralis.Query(marketList)
+        console.log(id)
+        let obj =  await query.get(id)
+        console.log(obj)
+        await obj.set("sold", true)
+        await obj.set("owner", web3Context.addr)
+        await obj.save()
+    }
+
     return <>
+        <div onClick={async ()=>{
+            let nfts = await sortCreatedNft()
+            // console.log(nfts[0])
+            // console.log(nftOnSale)
+            let marketList = Moralis.Object.extend("CreatedNftItem")
+            let query = new Moralis.Query(marketList)
+            // console.log(query)
+            console.log(await query.get("TeNv82b9eBmeg8vkaq28uge2"))
+        }}>ff</div>
     
         <div style={{display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
             {data && data.result.length > 0 ? 
@@ -124,6 +149,7 @@ export default function NFTTokenIds(props) {
                             >
                             {isOnSale(nft) && <Badge.Ribbon text="Buy Now" color={"green"}/>}
                             <Meta title={nft.name} description={nft.token_id} />
+                            <button onClick={()=>{updateSoldMarketItem(nft)}}/>
                         </Card>
                 }):
                 collections && collections.map((collection, id)=>{

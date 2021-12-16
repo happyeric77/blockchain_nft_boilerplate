@@ -5,7 +5,7 @@ import { Card, Image, Tooltip, Modal, Input } from "antd";
 import { FileSearchOutlined,  ShoppingCartOutlined } from "@ant-design/icons"
 import { supportedChains } from "../../src/networkProvider";
 import contractJson from "../../src/contracts/marketPlaceBoilerPlate.json"
-// import IERC721Json from "../../src/contracts/IERC721.json"
+import IERC721Json from "../../src/contracts/IERC721.json"
 
 
 export default function NFTBalance() {
@@ -33,8 +33,8 @@ export default function NFTBalance() {
         setNftToSell(nft)
     }
     async function sell(nftToSell, listPrice) {
-        // let token = new web3Context.web3.eth.Contract(IERC721Json.abi, nftToSell.token_address)
-        // await token.methods.approve(mktPlaceContract.current._address, nftToSell.token_id).send({from: web3Context.addr})
+        let token = new web3Context.web3.eth.Contract(IERC721Json.abi, nftToSell.token_address)
+        await token.methods.approve(mktPlaceContract.current._address, nftToSell.token_id).send({from: web3Context.addr})
         // await mktPlaceContract.current.methods.createMarketItem(nftToSell.token_address, nftToSell.token_id, web3Context.web3.utils.toWei(listPrice)).send({from: web3Context.addr})
         await contractProcessor.fetch({
             params: {
